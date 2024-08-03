@@ -1,8 +1,10 @@
-
-
 ## Overview
 
-This script implements a basic bigram model using the Natural Language Toolkit (NLTK). It allows users to input a text corpus to train the model and then predict the most likely next word based on the trained bigram probabilities.
+This program implements a basic bigram model using the Natural Language Toolkit (NLTK). It allows users to input a text corpus to train the model and then predict the most likely next word based on the trained bigram probabilities.
+
+## Purpose
+
+I created this program to cement my understanding of N-gram models.
 
 ## Features
 
