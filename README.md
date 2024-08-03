@@ -1,4 +1,4 @@
-# Simple Stochastic Bigram Model by Bryce Thorpe
+# Simple Stochastic Bigram Model with Temperature by Bryce Thorpe
 
 ## Overview
 
