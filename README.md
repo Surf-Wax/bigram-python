@@ -1,8 +1,10 @@
-# Simple Bigram Model by Bryce Thorpe
+# Simple Stochastic Bigram Model by Bryce Thorpe
 
 ## Overview
 
-This Simple Bigram Model is a basic implementation of a bigram language model created to illustrate the fundamental concepts of probabilistic text modeling. This Python script utilizes the Natural Language Toolkit (NLTK) library to train a bigram model based on user-provided text and predict the next word given an input word. The model supports temperature-based adjustments to influence the randomness of predictions.
+This Simple Stochastic Bigram Model is a basic implementation of a bigram language model created to illustrate the fundamental concepts of probabilistic text modeling. This Python script utilizes the Natural Language Toolkit (NLTK) library to train a bigram model based on user-provided text and predict the next word given an input word. 
+
+The model supports temperature-based adjustments to influence the randomness of predictions and produce different outputs even for the same input, reflecting the underlying probability distribution rather than always choosing the most probable option.
 
 ## Purpose
 
