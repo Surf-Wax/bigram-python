@@ -2,9 +2,11 @@
 # I made this model to cement my understanding of this basic language model
 #  and to lay the mental groundwork for understanding more complex models
 
+# IDEA: expand this from bigram to n-gram based on input?
+
 import os
 import nltk
-import csv
+import random
 from collections import defaultdict, Counter
 from time import sleep
 from prettytable import PrettyTable
@@ -49,7 +51,7 @@ def trainBigramModel():
     bigramCounts = Counter(bigrams)
     unigramCounts = Counter(tokens)
 
-    # Create a nested dictionary to store the probabilities 
+    # Create a nested dictionary to store the probabilities
     bigramProbabilities = defaultdict(lambda: defaultdict(float))
 
     # Calculate and store the probabilities
@@ -73,7 +75,26 @@ def trainBigramModel():
     return bigramProbabilities
 
 
-# Predict the next word using training data
+# Adjusts dict of base weights or probabilities based on input temperature and outputs normalized adjusted weights
+def generateAdjustedWeights(nextWordProbabilities, temperature):
+# If bigram(s) exists,
+    if nextWordProbabilities:
+        # Apply temperature to the probabilities (weights) iteratively
+        adjustedProbabilities = {word: (prob ** (1.0 / temperature)) for word, prob in nextWordProbabilities.items()}
+        # Get the sum of the adjusted probabilities (for normalization b/c they don't sum up to 1 once adjusted)
+        total = sum(adjustedProbabilities.values())
+        # Divide the adjusted weights for each word by the sum of the adjusted weights to get the normalized probabilities (add up to 1)
+        normalizedProbabilities = {word: prob / total for word, prob in adjustedProbabilities.items()}
+
+        return normalizedProbabilities
+    else:
+        print("")
+        print(f"-> No predictions available for the selected word.")
+        print("")
+        return {}
+
+
+# Predict the next word using training data weights based on input temperature
 def predictWord(bigramProbabilities):
     # Prompt the user for word to predict the next word
     while True:
@@ -85,30 +106,35 @@ def predictWord(bigramProbabilities):
           print("\nInput cannot be empty. Please try again.")
       else:
           break  # Exit the loop if input is valid
+      
+    # Prompt user for a temperature
+    while True:
+        temperature = float(input(f"Please input a temperature (0<x<2): "))
+        # Check if input is valid
+        if temperature <= 0 or temperature >= 2:
+            print("\nInput cannot be <=0 or >=2. Please try again.")
+        else:
+            break # Exit the loop if input is valid
         
     # Get the probabilities of the next words, given the previous word
-    nextWordProbabilities = bigramProbabilities[previousWord]
+    nextWordProbabilities = bigramProbabilities.get(previousWord, {})
 
-    # If a bigram exists,
-    if nextWordProbabilities:
-        # Search the dictionary for the word with the largest probability value, return the word
-        predictedNextWord = max(nextWordProbabilities, key=nextWordProbabilities.get)
-        # Get the probability of the most likely next word
-        predictedNextProbability = nextWordProbabilities[predictedNextWord]
-        print(f"") 
-        print(f"-> {predictedNextWord} <- (The most likely next word after '{previousWord}' is '{predictedNextWord}' with a probability of '{predictedNextProbability}')")
-        print("")
-    else:
-        print("")
-        print(f"-> No predictions available for the word '{previousWord}'.")
-        print("")
+    # Adjust probabilties based on weights and returned normalized probabilities
+    normalizedProbabilities = generateAdjustedWeights(nextWordProbabilities, temperature)
+
+    # Sample from the adjusted distribution - random.choices(population, weights, k)
+    predictedNextWord = random.choices(list(normalizedProbabilities.keys()), weights=normalizedProbabilities.values())[0]
+    predictedNextProbability = normalizedProbabilities[predictedNextWord]
+
+    print(f"") 
+    print(f"-> {predictedNextWord} <- (I've predicted the next word after '{previousWord}' to be '{predictedNextWord}' with a probability of '{predictedNextProbability}')")
+    print("")
+
 
 # Write the PrettyTable data to a text file
 def writeTable(table):
     with open('bigram_probabilities.txt', 'w') as txtfile:
         txtfile.write(table.get_string())
-
-# Get a word from the user
 
 
 if __name__ == '__main__':

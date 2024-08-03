@@ -1,21 +1,26 @@
+# Simple Bigram Model by Bryce Thorpe
+
 ## Overview
 
-This program implements a basic bigram model using the Natural Language Toolkit (NLTK). It allows users to input a text corpus to train the model and then predict the most likely next word based on the trained bigram probabilities.
+This Simple Bigram Model is a basic implementation of a bigram language model created to illustrate the fundamental concepts of probabilistic text modeling. This Python script utilizes the Natural Language Toolkit (NLTK) library to train a bigram model based on user-provided text and predict the next word given an input word. The model supports temperature-based adjustments to influence the randomness of predictions.
 
 ## Purpose
 
-I created this program to cement my understanding of N-gram models.
+The script is designed to:
+- Demonstrate the application of bigram language models for text prediction.
+- Provide a practical example of how temperature scaling affects the randomness of predictions.
+- Serve as an educational tool for understanding bigram models and basic probabilistic text prediction techniques.
+
+This script was created for my own learning and practical application.
 
 ## Features
 
-- **Download NLTK Resources**: Automatically downloads necessary NLTK resources if not already present.
-- **Train Bigram Model**: Accepts a text input from the user, tokenizes it, and calculates bigram probabilities.
-- **Predict Next Word**: Given a word, predicts the most likely next word based on the trained model.
-- **User Interaction**: Provides options to train the model with new text or predict the next word.
-- **Output**: Displays bigram probabilities in a tabular format using PrettyTable.
-- **Written with Nix Flakes**: All package dependencies are installed in an isolated, version-controlled dev shell using one command.
-    (Requires Nix package manager with flakes enabled)
-
+- **Bigram Model Training**: Trains a bigram model on user-provided text, calculating the probabilities of word pairs.
+- **Temperature-Based Prediction**: Allows adjustment of prediction randomness using temperature scaling, affecting the likelihood of next word predictions.
+- **User Input Validation**: Ensures valid user inputs for text and temperature, with checks for length and value constraints.
+- **Probability Normalization**: Computes and normalizes adjusted probabilities to ensure valid prediction distributions.
+- **PrettyTable Integration**: Displays bigram probabilities in a well-formatted table for easy viewing.
+- **Nix Flakes Integration**: Uses Nix flakes to create a development shell that manages Python versions and external libraries automatically.
 
 ## Installation
 
@@ -72,12 +77,58 @@ python3 Thorpe_bigram_model.py
 ```
 
 1. **Initialize Resources**: The script checks for and downloads required NLTK resources.
-2. **Train the Model**: Enter a string of text when prompted to train the model. The input string should be a small corpus suitable for generating bigrams.
-3. **Predict Words**: Input a word to receive predictions for the next most likely word based on the bigram model.
+2. **Train the Model**: Enter a string of text when prompted to train the model. The input string should be a small corpus suitable for generating bigrams. 
+3. **Predict Words**:
+    - Input a word (up to 17 characters) for which you want to predict the next word.
+    - Provide a temperature value (between 0 and 2) to adjust prediction randomness.
+    - The script will display the most likely next word based on the trained model and the provided temperature.
 4. **Options**:
-   - `[0] Train model on new text (corpus)`: Re-train the model with a new text input.
-   - `[1] Predict word`: Predict the next word given an input word.
-   - `[2] Quit`: Exit the program.
+    - `[0] Train model on new text (corpus)`: Re-train the model with a new text input.
+    - `[1] Predict word`: Predict the next word given an input word.
+    - `[2] Quit`: Exit the program.
+
+**Example Output:**
+```
+    Downloading NLTK resource: punkt
+    [nltk_data] Downloading package punkt to
+    [nltk_data]     /home/bear/Documents/dev/bigram-python/nltk_data...
+    [nltk_data]   Package punkt is already up-to-date!
+    
+    Welcome to my simple bigram implementation
+    
+    Please input a string (max 255 characters): hello hello hello hello govnah
+    +------------------+-------------+
+    |      Bigram      | Probability |
+    +------------------+-------------+
+    | P(hello | hello) |     0.75    |
+    +------------------+-------------+
+    
+    [0] Train model on new text(corpus)
+    [1] Predict word
+    [2] Quit
+    Please select an option by entering a number: 1
+    Please input a valid word (max 17 characters): hello
+    Please input a temperature (0<x<2): .1
+    
+    -> hello <- (I've predicted the next word after 'hello' to be 'hello' with a probability of '0.999983065198984')
+    
+    
+    [0] Train model on new text(corpus)
+    [1] Predict word
+    [2] Quit
+    Please select an option by entering a number: 1
+    Please input a valid word (max 17 characters): hello
+    Please input a temperature (0<x<2): 1.9
+    
+    -> govnah <- (I've predicted the next word after 'hello' to be 'govnah' with a probability of '0.35934296642401403')
+    
+    
+    [0] Train model on new text(corpus)
+    [1] Predict word
+    [2] Quit
+    Please select an option by entering a number: 2
+    Thank you!
+```
 
 ## Contact
    For any questions or comments, please reach out to thorpebryce@gmail.com.
