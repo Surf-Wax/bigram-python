@@ -25,6 +25,7 @@
           ];
 
           shellHook = '' 
+          echo -e "\nWelcome to the devshell for github.com/Surf-Wax/bigram-python !\n"
           '';
         };
 
